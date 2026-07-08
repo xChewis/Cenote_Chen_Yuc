@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cenotes de Yucatán — Sacbé Systems</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ===== TOKENS ===== */
+:root {
+  --azul-cenote: #0B3D4E;
+  --turquesa: #4ABFBF;
+  --turquesa-light: #7ED8D8;
+  --arena: #E8DCC8;
+  --arena-light: #F5F0E8;
+  --verde-selva: #1A6B4A;
+  --verde-light: #2D9B6F;
+  --madera: #2C1810;
+  --madera-light: #5C3825;
+  --blanco: #FDFCFA;
+  --gris: #6B7280;
+  --gris-light: #E5E7EB;
+  --rojo: #DC2626;
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --shadow-sm: 0 2px 8px rgba(11,61,78,0.08);
+  --shadow-md: 0 8px 32px rgba(11,61,78,0.14);
+  --shadow-lg: 0 16px 64px rgba(11,61,78,0.18);
+  --radius: 12px;
+  --radius-lg: 20px;
+}
+
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--arena-light);
+  color: var(--azul-cenote);
+  overflow-x: hidden;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; font-family: var(--font-body); }
+input, select, textarea { font-family: var(--font-body); }
+
+/* ===== TYPOGRAPHY ===== */
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height: 1.15; }
+h1 { font-size: clamp(2.8rem, 6vw, 5.5rem); }
+h2 { font-size: clamp(2rem, 4vw, 3.2rem); }
+h3 { font-size: clamp(1.4rem, 2.5vw, 2rem); }
+h4 { font-size: 1.2rem; }
+p { line-height: 1.7; color: var(--gris); }
+
+/* ===== LAYOUT ===== */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.section { padding: 96px 0; }
+.section-eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--turquesa);
+  margin-bottom: 12px;
+}
+.section-title { margin-bottom: 16px; }
+.section-sub { font-size: 1.05rem; max-width: 600px; margin-bottom: 48px; }
+
+/* ===== NAV ===== */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 0 24px;
+  transition: background 0.4s, box-shadow 0.4s;
+}
+.nav.scrolled {
+  background: rgba(11,61,78,0.97);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 2px 20px rgba(0,0,0,0.2);
+}
+.nav-inner {
+  max-width: 1200px; margin: 0 auto;
+  height: 70px; display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 10px;
+  color: var(--blanco); font-family: var(--font-display);
+  font-size: 1.4rem; font-weight: 600;
+}
+.nav-logo span { color: var(--turquesa-light); }
+.nav-links { display: flex; gap: 28px; list-style: none; }
+.nav-links a {
+  color: rgba(255,255,255,0.8); font-size: 0.875rem; font-weight: 500;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--turquesa-light); }
+.nav-cta {
+  background: var(--turquesa); color: var(--azul-cenote);
+  border: none; padding: 10px 22px; border-radius: 50px;
+  font-weight: 600; font-size: 0.875rem; transition: all 0.2s;
+}
+.nav-cta:hover { background: var(--turquesa-light); transform: translateY(-1px); }
+.nav-toggle { display: none; background: none; border: none; color: white; font-size: 1.5rem; }
+
+/* ===== HERO ===== */
+.hero {
+  position: relative; min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; background: var(--azul-cenote);
+}
+.hero-bg {
+  position: absolute; inset: 0; z-index: 0;
+  background: 
+    radial-gradient(ellipse 80% 60% at 30% 70%, rgba(74,191,191,0.25) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 70% 20%, rgba(26,107,74,0.2) 0%, transparent 60%),
+    linear-gradient(160deg, #0B3D4E 0%, #0D2B38 40%, #051820 100%);
+}
+/* Animated water rings */
+.hero-rings {
+  position: absolute; inset: 0; z-index: 1; overflow: hidden;
+}
+.ring {
+  position: absolute; border-radius: 50%;
+  border: 1px solid rgba(74,191,191,0.15);
+  animation: ringPulse 8s ease-in-out infinite;
+}
+.ring:nth-child(1) { width: 600px; height: 600px; left: -100px; bottom: -150px; animation-delay: 0s; }
+.ring:nth-child(2) { width: 900px; height: 900px; left: -250px; bottom: -350px; animation-delay: 2s; }
+.ring:nth-child(3) { width: 1200px; height: 1200px; left: -400px; bottom: -550px; animation-delay: 4s; }
+.ring:nth-child(4) { width: 400px; height: 400px; right: 50px; top: 50px; animation-delay: 1s; }
+@keyframes ringPulse {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.05); }
+}
+.hero-content {
+  position: relative; z-index: 2; text-align: center;
+  padding: 100px 24px 60px; max-width: 900px;
+}
+.hero-eyebrow {
+  display: inline-block;
+  font-size: 0.75rem; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--turquesa-light); margin-bottom: 24px;
+  padding: 6px 16px; border: 1px solid rgba(74,191,191,0.3); border-radius: 50px;
+}
+.hero-title {
+  color: var(--blanco); margin-bottom: 24px;
+  text-shadow: 0 4px 40px rgba(0,0,0,0.3);
+}
+.hero-title .accent { color: var(--turquesa-light); font-style: italic; }
+.hero-sub {
+  font-size: 1.1rem; color: rgba(255,255,255,0.7); max-width: 580px;
+  margin: 0 auto 44px;
+}
+.hero-ctas { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.btn-primary {
+  background: var(--turquesa); color: var(--azul-cenote);
+  border: none; padding: 16px 36px; border-radius: 50px;
+  font-weight: 600; font-size: 0.95rem; transition: all 0.25s;
+  box-shadow: 0 4px 20px rgba(74,191,191,0.4);
+}
+.btn-primary:hover { background: var(--turquesa-light); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(74,191,191,0.5); }
+.btn-outline {
+  background: transparent; color: var(--blanco);
+  border: 1.5px solid rgba(255,255,255,0.4); padding: 16px 36px; border-radius: 50px;
+  font-weight: 500; font-size: 0.95rem; transition: all 0.25s;
+}
+.btn-outline:hover { border-color: var(--blanco); background: rgba(255,255,255,0.08); transform: translateY(-2px); }
+.hero-scroll {
+  position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+  z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 8px;
+  color: rgba(255,255,255,0.5); font-size: 0.75rem; letter-spacing: 0.1em;
+}
+.hero-scroll-line {
+  width: 1px; height: 40px; background: linear-gradient(to bottom, rgba(255,255,255,0.5), transparent);
+  animation: scrollLine 2s ease-in-out infinite;
+}
+@keyframes scrollLine { 0%,100%{opacity:0.5;transform:scaleY(1)} 50%{opacity:1;transform:scaleY(0.5)} }
+
+/* ===== STATS BAR ===== */
+.stats-bar {
+  background: var(--blanco); border-bottom: 1px solid var(--gris-light);
+  padding: 28px 0;
+}
+.stats-inner {
+  display: flex; justify-content: space-around; flex-wrap: wrap; gap: 24px;
+}
+.stat-item { text-align: center; }
+.stat-num { font-family: var(--font-display); font-size: 2.2rem; font-weight: 600; color: var(--azul-cenote); }
+.stat-label { font-size: 0.8rem; color: var(--gris); text-transform: uppercase; letter-spacing: 0.08em; }
+
+/* ===== RECOMENDADOR ===== */
+.recomendador { background: var(--arena-light); }
+.rec-card {
+  background: var(--blanco); border-radius: var(--radius-lg);
+  padding: 48px; box-shadow: var(--shadow-md);
+}
+.rec-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; margin-bottom: 32px;
+}
+.rec-field label {
+  display: block; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--azul-cenote); margin-bottom: 10px;
+}
+.rec-field select, .rec-field input {
+  width: 100%; padding: 12px 16px; border: 1.5px solid var(--gris-light);
+  border-radius: var(--radius); background: var(--arena-light);
+  color: var(--azul-cenote); font-size: 0.95rem; transition: border-color 0.2s;
+  appearance: none; -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%230B3D4E' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 14px center;
+}
+.rec-field select:focus, .rec-field input:focus {
+  outline: none; border-color: var(--turquesa);
+}
+.btn-rec {
+  background: var(--azul-cenote); color: var(--blanco);
+  border: none; padding: 16px 40px; border-radius: 50px;
+  font-weight: 600; font-size: 1rem; transition: all 0.25s;
+  width: 100%;
+}
+.btn-rec:hover { background: var(--verde-selva); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.rec-resultado {
+  display: none; margin-top: 40px; padding-top: 40px;
+  border-top: 1px solid var(--gris-light);
+}
+.rec-resultado.visible { display: block; animation: fadeUp 0.5s ease; }
+.rec-res-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; }
+.rec-res-cenote {
+  border: 2px solid var(--turquesa); border-radius: var(--radius-lg);
+  padding: 28px; background: linear-gradient(135deg, rgba(74,191,191,0.06), rgba(11,61,78,0.03));
+  position: relative; overflow: hidden;
+}
+.rec-res-cenote.winner {
+  border-color: var(--turquesa); background: linear-gradient(135deg, rgba(74,191,191,0.12), rgba(11,61,78,0.06));
+}
+.rec-badge {
+  display: inline-block; padding: 4px 14px; border-radius: 50px;
+  font-size: 0.75rem; font-weight: 600; margin-bottom: 16px;
+}
+.rec-badge.recomendado { background: var(--turquesa); color: var(--azul-cenote); }
+.rec-badge.alternativo { background: var(--arena); color: var(--azul-cenote); }
+.rec-actividades { list-style: none; margin: 12px 0; }
+.rec-actividades li { font-size: 0.875rem; color: var(--gris); padding: 4px 0; display: flex; gap: 8px; align-items: flex-start; }
+.rec-actividades li::before { content: '→'; color: var(--turquesa); flex-shrink: 0; }
+.btn-ruta {
+  background: var(--turquesa); color: var(--azul-cenote);
+  border: none; padding: 11px 24px; border-radius: 50px;
+  font-weight: 600; font-size: 0.85rem; margin-top: 16px; transition: all 0.2s;
+  display: inline-block;
+}
+.btn-ruta:hover { background: var(--turquesa-light); transform: translateY(-1px); }
+
+/* ===== CENOTES SECTIONS ===== */
+.cenote-section { padding: 96px 0; }
+.santa-barbara { background: linear-gradient(180deg, var(--arena-light) 0%, #eef4f7 100%); }
+.san-ignacio { background: linear-gradient(180deg, #eef4f7 0%, var(--arena-light) 100%); }
+.cenote-header { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 48px; flex-wrap: wrap; }
+.cenote-badge-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--azul-cenote); color: var(--blanco);
+  padding: 8px 20px; border-radius: 50px; font-size: 0.8rem; font-weight: 600; margin-bottom: 12px;
+}
+.cenote-badge-tag .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--turquesa-light); }
+.cenote-link { font-size: 0.875rem; color: var(--turquesa); font-weight: 500; text-decoration: underline; }
+
+/* Gallery */
+.gallery-strip { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 48px; }
+.gallery-strip::-webkit-scrollbar { height: 4px; }
+.gallery-strip::-webkit-scrollbar-track { background: var(--gris-light); border-radius: 2px; }
+.gallery-strip::-webkit-scrollbar-thumb { background: var(--turquesa); border-radius: 2px; }
+.gallery-img {
+  flex-shrink: 0; width: 280px; height: 190px; border-radius: var(--radius);
+  overflow: hidden; position: relative;
+}
+.gallery-img-inner {
+  width: 100%; height: 100%;
+  transition: transform 0.5s ease;
+}
+.gallery-img:hover .gallery-img-inner { transform: scale(1.06); }
+.gallery-img .img-label {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: linear-gradient(transparent, rgba(11,61,78,0.85));
+  color: var(--blanco); padding: 24px 16px 12px;
+  font-size: 0.85rem; font-weight: 500;
+}
+
+/* Cards grid */
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+.card {
+  background: var(--blanco); border-radius: var(--radius-lg);
+  overflow: hidden; box-shadow: var(--shadow-sm);
+  transition: transform 0.3s, box-shadow 0.3s;
+  display: flex; flex-direction: column;
+}
+.card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+.card-img {
+  height: 160px; overflow: hidden; flex-shrink: 0;
+}
+.card-body { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+.card-tag {
+  display: inline-block; padding: 3px 10px; border-radius: 4px;
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.tag-agua { background: rgba(74,191,191,0.15); color: var(--azul-cenote); }
+.tag-gastronomia { background: rgba(26,107,74,0.12); color: var(--verde-selva); }
+.tag-transporte { background: rgba(92,56,37,0.12); color: var(--madera-light); }
+.tag-pase { background: rgba(11,61,78,0.1); color: var(--azul-cenote); }
+.tag-hotel { background: rgba(232,220,200,0.6); color: var(--madera); }
+.tag-romantico { background: rgba(220,38,38,0.08); color: #9B1C1C; }
+.card h4 { font-family: var(--font-display); font-size: 1.25rem; margin-bottom: 8px; color: var(--azul-cenote); }
+.card p { font-size: 0.875rem; flex: 1; }
+.card-price {
+  margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--gris-light);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.card-price .price { font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; color: var(--azul-cenote); }
+.card-price .per { font-size: 0.75rem; color: var(--gris); }
+.btn-card {
+  background: none; border: 1.5px solid var(--turquesa); color: var(--azul-cenote);
+  padding: 8px 18px; border-radius: 50px; font-size: 0.8rem; font-weight: 600; transition: all 0.2s;
+}
+.btn-card:hover { background: var(--turquesa); }
+
+/* Gradient placeholders for images */
+.grad-1 { background: linear-gradient(135deg, #0B3D4E 0%, #4ABFBF 50%, #1A6B4A 100%); }
+.grad-2 { background: linear-gradient(135deg, #1A6B4A 0%, #7ED8D8 60%, #0B3D4E 100%); }
+.grad-3 { background: linear-gradient(135deg, #4ABFBF 0%, #E8DCC8 50%, #2C1810 100%); }
+.grad-4 { background: linear-gradient(135deg, #0D2B38 0%, #4ABFBF 40%, #2D9B6F 100%); }
+.grad-5 { background: linear-gradient(135deg, #2C1810 0%, #4ABFBF 60%, #0B3D4E 100%); }
+.grad-6 { background: linear-gradient(135deg, #1A6B4A 0%, #E8DCC8 50%, #4ABFBF 100%); }
+.grad-7 { background: linear-gradient(135deg, #0B3D4E 0%, #7ED8D8 40%, #E8DCC8 100%); }
+.grad-8 { background: linear-gradient(135deg, #4ABFBF 0%, #1A6B4A 50%, #0D2B38 100%); }
+
+/* Cenote name watermark on gradients */
+.grad-label {
+  height: 100%; display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-size: 1.4rem; font-style: italic;
+  color: rgba(255,255,255,0.6); font-weight: 300; letter-spacing: 0.08em;
+}
+
+/* ===== MAPA / RUTA ===== */
+.mapa-section { background: var(--azul-cenote); color: var(--blanco); padding: 96px 0; }
+.mapa-section .section-eyebrow { color: var(--turquesa-light); }
+.mapa-section h2 { color: var(--blanco); }
+.mapa-section .section-sub { color: rgba(255,255,255,0.65); }
+.mapa-controls {
+  background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius-lg); padding: 36px; margin-bottom: 32px;
+}
+.mapa-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 28px; }
+.mapa-field label {
+  display: block; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--turquesa-light); margin-bottom: 10px;
+}
+.mapa-field select, .mapa-field input {
+  width: 100%; padding: 12px 16px; border: 1.5px solid rgba(255,255,255,0.15);
+  border-radius: var(--radius); background: rgba(255,255,255,0.07);
+  color: var(--blanco); font-size: 0.95rem; transition: border-color 0.2s;
+  appearance: none; -webkit-appearance: none;
+}
+.mapa-field select:focus, .mapa-field input:focus {
+  outline: none; border-color: var(--turquesa);
+}
+.mapa-field select option { background: var(--azul-cenote); color: var(--blanco); }
+.btn-mapa {
+  background: var(--turquesa); color: var(--azul-cenote);
+  border: none; padding: 14px 32px; border-radius: 50px;
+  font-weight: 700; font-size: 0.95rem; transition: all 0.25s;
+}
+.btn-mapa:hover { background: var(--turquesa-light); transform: translateY(-2px); }
+.mapa-iframe-wrap {
+  border-radius: var(--radius-lg); overflow: hidden;
+  height: 400px; box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  cursor: pointer; transition: all 0.3s;
+}
+.mapa-iframe-wrap:hover { background: rgba(255,255,255,0.08); }
+.mapa-placeholder { text-align: center; padding: 40px; }
+.mapa-placeholder .icon { font-size: 4rem; margin-bottom: 16px; }
+.mapa-placeholder p { color: rgba(255,255,255,0.6); font-size: 0.95rem; }
+.mapa-iframe-wrap iframe { width: 100%; height: 100%; border: none; }
+
+/* ===== COMPARATIVA ===== */
+.comparativa { background: var(--blanco); }
+.comp-table { width: 100%; border-collapse: collapse; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md); }
+.comp-table th {
+  background: var(--azul-cenote); color: var(--blanco);
+  padding: 18px 24px; text-align: left; font-family: var(--font-display);
+  font-size: 1.1rem; font-weight: 600;
+}
+.comp-table th:first-child { width: 36%; }
+.comp-table th:not(:first-child) { text-align: center; }
+.comp-table td {
+  padding: 16px 24px; border-bottom: 1px solid var(--gris-light);
+  font-size: 0.9rem;
+}
+.comp-table tr:last-child td { border-bottom: none; }
+.comp-table tr:nth-child(even) td { background: var(--arena-light); }
+.comp-table td:not(:first-child) { text-align: center; }
+.comp-table td:first-child { font-weight: 500; color: var(--azul-cenote); }
+.win { color: var(--verde-selva); font-weight: 600; font-size: 1.2rem; }
+.partial { color: var(--turquesa); font-weight: 600; font-size: 1.1rem; }
+.neutral { color: var(--gris); font-size: 1.1rem; }
+
+/* ===== RESERVAS ===== */
+.reservas { background: var(--arena-light); }
+.reservas-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: 48px; align-items: start; }
+.reservas-info h3 { font-family: var(--font-display); font-size: 1.8rem; margin-bottom: 16px; }
+.reservas-info p { font-size: 0.95rem; margin-bottom: 24px; }
+.reservas-bullets { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.reservas-bullets li { display: flex; gap: 12px; align-items: flex-start; font-size: 0.875rem; }
+.reservas-bullets .ic { font-size: 1.2rem; flex-shrink: 0; }
+.form-card {
+  background: var(--blanco); border-radius: var(--radius-lg);
+  padding: 40px; box-shadow: var(--shadow-md);
+}
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.form-full { grid-column: 1 / -1; }
+.form-field label {
+  display: block; font-size: 0.8rem; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--azul-cenote); margin-bottom: 8px;
+}
+.form-field input, .form-field select, .form-field textarea {
+  width: 100%; padding: 12px 16px; border: 1.5px solid var(--gris-light);
+  border-radius: var(--radius); background: var(--arena-light);
+  color: var(--azul-cenote); font-size: 0.95rem; transition: border-color 0.2s;
+  appearance: none; -webkit-appearance: none;
+}
+.form-field input:focus, .form-field select:focus, .form-field textarea:focus {
+  outline: none; border-color: var(--turquesa); background: var(--blanco);
+}
+.form-field input.error, .form-field select.error, .form-field textarea.error {
+  border-color: var(--rojo);
+}
+.form-field .err-msg { font-size: 0.75rem; color: var(--rojo); margin-top: 4px; display: none; }
+.form-field .err-msg.show { display: block; }
+.form-field textarea { resize: vertical; min-height: 90px; }
+.btn-submit {
+  width: 100%; background: var(--azul-cenote); color: var(--blanco);
+  border: none; padding: 16px; border-radius: 50px;
+  font-weight: 700; font-size: 1rem; margin-top: 8px; transition: all 0.3s;
+}
+.btn-submit:hover { background: var(--verde-selva); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
+/* Mis reservas */
+.mis-reservas { margin-top: 72px; }
+.mis-reservas h3 { font-family: var(--font-display); font-size: 1.8rem; margin-bottom: 8px; }
+.mis-reservas .sub { font-size: 0.9rem; color: var(--gris); margin-bottom: 28px; }
+.reservas-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+.reserva-item {
+  background: var(--blanco); border-radius: var(--radius-lg); padding: 24px;
+  box-shadow: var(--shadow-sm); border-left: 4px solid var(--turquesa);
+}
+.reserva-folio {
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--turquesa); margin-bottom: 12px;
+}
+.reserva-item h4 { font-family: var(--font-display); font-size: 1.2rem; color: var(--azul-cenote); margin-bottom: 8px; }
+.reserva-details { font-size: 0.85rem; color: var(--gris); line-height: 1.8; }
+.btn-del-reserva {
+  background: none; border: 1px solid var(--gris-light);
+  color: var(--gris); padding: 6px 14px; border-radius: 50px;
+  font-size: 0.75rem; margin-top: 14px; transition: all 0.2s;
+}
+.btn-del-reserva:hover { border-color: var(--rojo); color: var(--rojo); }
+.reservas-empty { color: var(--gris); font-size: 0.95rem; padding: 24px 0; }
+
+/* ===== MODAL ===== */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(11,61,78,0.7); backdrop-filter: blur(6px);
+  display: none; align-items: center; justify-content: center; padding: 24px;
+}
+.modal-overlay.open { display: flex; animation: fadeIn 0.3s ease; }
+.modal {
+  background: var(--blanco); border-radius: var(--radius-lg);
+  padding: 48px; max-width: 520px; width: 100%;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.3);
+  animation: scaleIn 0.35s ease;
+  text-align: center;
+}
+.modal-icon { font-size: 3.5rem; margin-bottom: 20px; }
+.modal h3 { font-family: var(--font-display); font-size: 2rem; color: var(--verde-selva); margin-bottom: 8px; }
+.modal .folio {
+  display: inline-block; background: var(--azul-cenote); color: var(--blanco);
+  padding: 8px 20px; border-radius: 50px; font-size: 0.85rem;
+  font-weight: 700; letter-spacing: 0.1em; margin: 16px 0;
+}
+.modal-summary {
+  background: var(--arena-light); border-radius: var(--radius);
+  padding: 20px; text-align: left; margin: 20px 0; font-size: 0.875rem;
+}
+.modal-summary div { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--gris-light); }
+.modal-summary div:last-child { border-bottom: none; }
+.modal-summary span:first-child { color: var(--gris); }
+.modal-summary span:last-child { font-weight: 600; color: var(--azul-cenote); }
+.modal-note { font-size: 0.8rem; color: var(--gris); margin-bottom: 24px; }
+.btn-modal-close {
+  background: var(--azul-cenote); color: var(--blanco);
+  border: none; padding: 14px 36px; border-radius: 50px;
+  font-weight: 600; font-size: 0.95rem; transition: all 0.2s;
+}
+.btn-modal-close:hover { background: var(--verde-selva); }
+
+/* ===== FOOTER ===== */
+footer {
+  background: var(--madera); color: rgba(255,255,255,0.8);
+  padding: 72px 0 0;
+}
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+.footer-brand {}
+.footer-logo { font-family: var(--font-display); font-size: 1.8rem; color: var(--blanco); margin-bottom: 12px; }
+.footer-logo span { color: var(--turquesa-light); }
+.footer-tagline { font-size: 0.875rem; color: rgba(255,255,255,0.55); margin-bottom: 20px; max-width: 280px; }
+.footer-social { display: flex; gap: 12px; }
+.social-btn {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; transition: all 0.2s; border: none; color: white; cursor: pointer;
+}
+.social-btn:hover { background: var(--turquesa); transform: translateY(-2px); }
+.footer-col h5 { font-family: var(--font-display); font-size: 1rem; color: var(--blanco); margin-bottom: 16px; }
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-col ul a { font-size: 0.875rem; color: rgba(255,255,255,0.55); transition: color 0.2s; }
+.footer-col ul a:hover { color: var(--turquesa-light); }
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.1); padding: 24px 0;
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: gap;
+  gap: 16px; flex-wrap: wrap;
+}
+.footer-bottom p { font-size: 0.8rem; color: rgba(255,255,255,0.4); }
+.footer-disclaimer { font-size: 0.75rem; color: rgba(255,255,255,0.3); max-width: 600px; }
+.sacbe-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+  padding: 6px 16px; border-radius: 50px; font-size: 0.8rem; font-weight: 600;
+  color: var(--turquesa-light);
+}
+.wa-float {
+  position: fixed; bottom: 28px; right: 28px; z-index: 99;
+  background: #25D366; border-radius: 50%; width: 58px; height: 58px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 20px rgba(37,211,102,0.4); border: none;
+  cursor: pointer; transition: all 0.3s; font-size: 1.6rem;
+}
+.wa-float:hover { transform: scale(1.1) translateY(-3px); box-shadow: 0 8px 32px rgba(37,211,102,0.5); }
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+.fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+
+/* ===== MOBILE NAV ===== */
+.mobile-menu {
+  display: none; position: fixed; top: 70px; left: 0; right: 0; z-index: 99;
+  background: rgba(11,61,78,0.98); backdrop-filter: blur(12px);
+  padding: 24px; flex-direction: column; gap: 16px;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a { color: rgba(255,255,255,0.8); font-size: 1rem; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .nav-links, .nav-cta { display: none; }
+  .nav-toggle { display: block; }
+  .reservas-grid { grid-template-columns: 1fr; }
+  .rec-res-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 640px) {
+  .section { padding: 64px 0; }
+  .rec-card { padding: 24px; }
+  .form-grid { grid-template-columns: 1fr; }
+  .form-full { grid-column: 1; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .comp-table th, .comp-table td { padding: 12px 14px; font-size: 0.85rem; }
+  .mapa-controls { padding: 24px; }
+  .modal { padding: 32px 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#hero" class="nav-logo">Cenotes <span>Yucatán</span></a>
+    <ul class="nav-links">
+      <li><a href="#recomendador">Recomendador</a></li>
+      <li><a href="#santa-barbara">Santa Bárbara</a></li>
+      <li><a href="#san-ignacio">San Ignacio</a></li>
+      <li><a href="#ruta">Ruta</a></li>
+      <li><a href="#reservas">Reservar</a></li>
+    </ul>
+    <button class="nav-cta" onclick="scrollTo('#reservas')">Reservar ahora</button>
+    <button class="nav-toggle" onclick="toggleMenu()" aria-label="Menú">☰</button>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#recomendador" onclick="toggleMenu()">Recomendador</a>
+  <a href="#santa-barbara" onclick="toggleMenu()">Cenote Santa Bárbara</a>
+  <a href="#san-ignacio" onclick="toggleMenu()">Cenote San Ignacio</a>
+  <a href="#ruta" onclick="toggleMenu()">Ruta</a>
+  <a href="#reservas" onclick="toggleMenu()">Reservar</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-rings">
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+  </div>
+  <div class="hero-content">
+    <span class="hero-eyebrow">🌿 Yucatán · México</span>
+    <h1 class="hero-title">Descubre los cenotes<br>más <span class="accent">mágicos</span> de Yucatán</h1>
+    <p class="hero-sub">Tu recomendador turístico para planear una experiencia única entre Cenotes Santa Bárbara y Cenote San Ignacio.</p>
+    <div class="hero-ctas">
+      <button class="btn-primary" onclick="document.querySelector('#recomendador').scrollIntoView({behavior:'smooth'})">🗺️ Planear mi ruta</button>
+      <button class="btn-outline" onclick="document.querySelector('#reservas').scrollIntoView({behavior:'smooth'})">Simular reserva</button>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span>Explorar</span>
+    <div class="hero-scroll-line"></div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar fade-up">
+  <div class="container">
+    <div class="stats-inner">
+      <div class="stat-item"><div class="stat-num">2</div><div class="stat-label">Destinos icónicos</div></div>
+      <div class="stat-item"><div class="stat-num">9</div><div class="stat-label">Cenotes únicos</div></div>
+      <div class="stat-item"><div class="stat-num">+15</div><div class="stat-label">Experiencias disponibles</div></div>
+      <div class="stat-item"><div class="stat-num">4.9 ⭐</div><div class="stat-label">Calificación promedio</div></div>
+      <div class="stat-item"><div class="stat-num">Mágicos</div><div class="stat-label">100% naturales</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- RECOMENDADOR -->
+<section class="recomendador section" id="recomendador">
+  <div class="container">
+    <div class="fade-up">
+      <span class="section-eyebrow">Tu aventura, tu elección</span>
+      <h2 class="section-title">Recomendador<br><em>turístico</em></h2>
+      <p class="section-sub">Cuéntanos sobre tu viaje y te sugerimos el cenote perfecto para ti.</p>
+    </div>
+    <div class="rec-card fade-up">
+      <div class="rec-grid">
+        <div class="rec-field">
+          <label for="rec-exp">Tipo de experiencia</label>
+          <select id="rec-exp">
+            <option value="">Seleccionar...</option>
+            <option value="familiar">👨‍👩‍👧‍👦 Familiar</option>
+            <option value="aventura">🧗 Aventura</option>
+            <option value="romantica">💑 Romántica</option>
+            <option value="relajacion">🧘 Relajación</option>
+            <option value="gastronomica">🍽️ Gastronómica</option>
+            <option value="primer-viaje">🌟 Primer viaje</option>
+          </select>
+        </div>
+        <div class="rec-field">
+          <label for="rec-origen">Punto de salida</label>
+          <select id="rec-origen">
+            <option value="">Seleccionar...</option>
+            <option value="merida">Mérida</option>
+            <option value="valladolid">Valladolid</option>
+            <option value="progreso">Progreso</option>
+            <option value="cancun">Cancún</option>
+            <option value="otro">Otro</option>
+          </select>
+        </div>
+        <div class="rec-field">
+          <label for="rec-tiempo">Tiempo disponible</label>
+          <select id="rec-tiempo">
+            <option value="">Seleccionar...</option>
+            <option value="medio">Medio día (4–5 hrs)</option>
+            <option value="completo">Día completo</option>
+            <option value="finde">Fin de semana</option>
+          </select>
+        </div>
+        <div class="rec-field">
+          <label for="rec-presupuesto">Presupuesto</label>
+          <select id="rec-presupuesto">
+            <option value="">Seleccionar...</option>
+            <option value="economico">💚 Económico</option>
+            <option value="medio">💛 Medio</option>
+            <option value="premium">💎 Premium</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn-rec" onclick="recomendar()">✨ Obtener mi recomendación personalizada</button>
+
+      <div class="rec-resultado" id="rec-resultado">
+        <span class="section-eyebrow">Tu recomendación</span>
+        <h3 id="rec-titulo" style="margin-bottom:8px;"></h3>
+        <p id="rec-motivo" style="margin-bottom:24px;"></p>
+        <div class="rec-res-grid" id="rec-res-grid"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SANTA BÁRBARA -->
+<section class="cenote-section santa-barbara" id="santa-barbara">
+  <div class="container">
+    <div class="cenote-header fade-up">
+      <div>
+        <div class="cenote-badge-tag"><div class="dot"></div>Homún, Yucatán</div>
+        <h2>Cenotes Santa Bárbara</h2>
+        <p style="max-width:540px;margin-top:12px;">Un circuito de cuatro cenotes rodeados de selva, con gastronomía yucateca y transporte interno incluido. La experiencia más completa del sur de Mérida.</p>
+      </div>
+      <a href="https://cenotessantabarbara.com/" target="_blank" rel="noopener" class="cenote-link">🔗 Sitio oficial →</a>
+    </div>
+
+    <!-- Gallery -->
+    <div class="gallery-strip fade-up">
+      <div class="gallery-img"><div class="gallery-img-inner grad-1"><div class="grad-label">Cascabel</div></div><div class="img-label">Cenote Cascabel</div></div>
+      <div class="gallery-img"><div class="gallery-img-inner grad-2"><div class="grad-label">Chaksikín</div></div><div class="img-label">Cenote Chaksikín</div></div>
+      <div class="gallery-img"><div class="gallery-img-inner grad-3"><div class="grad-label">Xooch</div></div><div class="img-label">Cenote Xooch</div></div>
+      <div class="gallery-img"><div class="gallery-img-inner grad-4"><div class="grad-label">Pool Cocom</div></div><div class="img-label">Pool Cocom</div></div>
+      <div class="gallery-img"><div class="gallery-img-inner grad-5"><div class="grad-label">Gastronomía</div></div><div class="img-label">Comida Regional</div></div>
+      <div class="gallery-img"><div class="gallery-img-inner grad-6"><div class="grad-label">Selva</div></div><div class="img-label">Senderos naturales</div></div>
+    </div>
+
+    <!-- Cards -->
+    <div class="cards-grid fade-up">
+      <div class="card">
+        <div class="card-img grad-1"><div class="grad-label">Cascabel</div></div>
+        <div class="card-body">
+          <span class="card-tag tag-agua">Cenote</span>
+          <h4>Cascabel</h4>
+          <p>El favorito de los visitantes. Aguas cristalinas de color turquesa intenso, rodeadas de stalactitas naturales. Ideal para snorkel y fotografía.</p>
+          <div class="card-price">
+            <div><div class="price">Incluido</div><div class="per">en pase general</div></div>
+            <button class="btn-card" onclick="document.querySelector('#reservas').scrollIntoView({behavior:'smooth'})">Reservar</button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-img grad-2"><div class="grad-label">Chaksikín</div></div>
+        <div class="card-body">
+          <span class="card-tag tag-agua">Cenote</span>
+          <h4>Chaksikín</h4>
+          <p>Semiabierto y rodeado de vegetación exuberante. Sus aguas calmadas lo hacen perfecto para familias y para quienes buscan tranquilidad.</p>
+          <div class="card-price">
+            <div><div class="price">Incluido</div><div class="per">en pase general</div></div>
+            <button class="btn-card" onclick="document.querySelector('#reservas').scrollIntoView({behavior:'smooth'})">Reservar</button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-img grad-3"><div class="grad-label">Xooch</div></div>
+        <div class="card-body">
+          <span class="card-tag tag-agua">Cenote</span>
+          <h4>Xooch</h4>
+          <p>Cenote abierto tipo ojo de agua, con plataformas para clavados. Uno de los más fotogénicos del circuito, ideal para aventureros.</p>
+          <div class="card-price">
+            <div><div class="price">Incluido</div><div class="per">en pase general</div></div>
+            <button class="btn-card" onclick="document.querySelector('#reservas').scrollIntoView({behavior:'smooth'})">Reservar</button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-img grad-4"><div class="grad-label">Pool Cocom</div></div>
+        <div class="card-body">
+          <span class="card-tag tag-agua">Cenote</span>
+          <h4>Pool Cocom</h4>
+          <p>El más sereno del grupo. Aguas espejadas y frescas entre rocas calcáreas. Perfecto para meditación, relajación y fotografía artística.</p>
+          <div class="card-price">
+            <div><div class="price">Incluido</div><div class="per">en pase general</div></div>
+            <button class="btn-card" onclick="document.querySelector('#reservas').scrollIntoView({behavior:'smooth'})">Reservar</button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-img grad-5"><div class="grad-label">Comida</div></div>
+        <div class="card-body">
+          <span class="card-tag tag-gastronomia">Gastronomía</span>
+          <h4>Restaurante Regional</h4>
+          <p>Cochinita pibil, sopa de lima, poc chuc y tortillas hechas a mano. Gastronomía yucateca auténtica en el corazón de la selva.</p>
+          <div class="card-price">
+            <div><div class="price">$150–250</div><div class="per">por persona MXN</div></div>
+            <button class="btn-card" onclick="document.querySelector('#reservas').scrollIntoView({behavior:'smooth'})">Reservar</button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-img grad-6"><div class="grad-label">Transporte</div></div>
+        <div class="card-body">
+          <span class="card-tag tag-transporte">Transporte</span>
+          <h4>Transporte interno</h4>
+          <p>Recorre el circuito en bicicleta, combi o expreso. Chaleco salvavidas incluido en todos los pases para mayor seguridad en el agua.</p>
+          <div class="card-price">
+            <div><div class="price">Incluido</div><div class="per">chaleco incluido</div></div>
+            <button class="btn-card" onclick="document.querySelector('#reservas').scrollIntoView({behavior:'smooth'})">Reservar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SAN IGNACIO -->
+<section class="cenote-section san-ignacio" id="san-ignacio">
+  <div class="container">
+    <div class="cenote-header fade-up">
+      <div>
+        <div class="cenote-badge-tag"><div class="dot"></div>Chocholá, Yucatán</div>
+        <h2>Cenote San Ignacio</h2>
+        <p style="max-width:540px;margin-top:12px;">Una experiencia de lujo en la naturaleza. Río subterráneo, experiencias nocturnas, hotel hacienda y vivencias románticas únicas en la Península.</p>
+      </div>
+      <a href="https://cenotesanignacio.com/" target="_blank" rel="noopener" class="cenote-link">🔗 Sitio oficial →</a>
+    </div>
+
+    <!-- Gallery -->
+    <div class="gallery-strip fade-up">
+      <div class="gallery-img"><div class="gallery-img-inner grad-4"><div class="grad-label">San Ignacio</div></div><div class="img-label">Pase General</div></div>
+      <div class="gallery-img"><div class="gallery-img-inner grad-7"><div class="grad-label">Aventura</div></div><div class="img-label">Pase Aventura</div></div>
+      <div class="gallery-img"><div class="gallery-img-inner grad-8"><div class="grad-label">Nocturno</div></div><div class="img-label">Pase Nocturno</div></div>
+      <div class="gallery-img"><div class="gallery-img-inner grad-2"><div class="grad-label">Esmeralda</div></div><div class="img-label">Río Esmeralda</div></div>
+      <div class="gallery-img"><div class="gallery-img-inner grad-1"><div class="grad-label">Corazón</div></div><div class="img-label">Corazón de Agua</div></div>
+      <div class="gallery-img"><div class="gallery-img-inner grad-3"><div class="grad-label">Hacienda</div></div><div class="img-label">Hotel Hacienda</div></div>
+    </div>
+
+    <!-- Cards -->
+    <div class="cards-grid fade-up">
+      <div class="card">
+        <div class="card-img grad-4"><div class="grad-label">General</div></div>
+        <div class="card-body">
+          <span class="card-tag tag-pase">Pase</span>
+          <h4>Pase General</h4>
+          <p>Acceso al cenote principal, zona de descanso y sendero. Incluye uso de instalaciones. Perfecto para una visita relajada en familia o pareja.</p>
+          <div class="card-price">
+            <div><div class="price">$280</div><div class="per">por persona MXN</div></div>
+            <button class="btn-card" onclick="document.querySelector('#reservas').scrollIntoView({behavior:'smooth'})">Reservar</button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-img grad-7"><div class="grad-label">Aventura</div></div>
+        <div class="card-body">
+          <span class="card-tag tag-pase">Pase</span>
+          <h4>Pase Aventura</h4>
+          <p>Rappel, tirolesa, kayak subterráneo y snorkel en el Río Esmeralda. Una adrenalina natural inigualable en las entrañas de la tierra.</p>
+          <div class="card-price">
+            <div><div class="price">$580</div><div class="per">por persona MXN</div></div>
+            <button class="btn-card" onclick="document.querySelector('#reservas').scrollIntoView({behavior:'smooth'})">Reservar</button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-img grad-8"><div class="grad-label">Nocturno</div></div>
+        <div class="card-body">
+          <span class="card-tag tag-pase">Pase</span>
+          <h4>Pase Nocturno</h4>
+          <p>Nada bajo la luz de la luna en el cenote iluminado. Una experiencia mística única que combina la majestuosidad del agua con el silencio de la noche.</p>
+          <div class="card-price">
+            <div><div class="price">$450</div><div class="per">por persona MXN</div></div>
+            <button class="btn-card" onclick="document.querySelector('#reservas').scrollIntoView({behavior:'smooth'})">Reservar</button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-img grad-2"><div class="grad-label">Esmeralda</div></div>
+        <div class="card-body">
+          <span class="card-tag tag-agua">Cenote</span>
+          <h4>Río Esmeralda</h4>
+          <p>Sistema de ríos subterráneos de color verde esmeralda. Una de las formaciones más impresionantes de toda la Península de Yucatán.</p>
+          <div class="card-price">
+            <div><div class="price">Pase Aventura</div><div class="per">incluido</div></div>
+            <button class="btn-card" onclick="document.querySelector('#reservas').scrollIntoView({behavior:'smooth'})">Reservar</button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-img grad-1"><div class="grad-label">Corazón</div></div>
+        <div class="card-body">
+          <span class="card-tag tag-agua">Cenote</span>
+          <h4>Corazón de Agua</h4>
+          <p>La joya del complejo. Un cenote con una forma natural de corazón visto desde arriba. Fotogénico, íntimo y perfecto para ceremonias.</p>
+          <div class="card-price">
+            <div><div class="price">$180</div><div class="per">acceso especial MXN</div></div>
+            <button class="btn-card" onclick="document.querySelector('#reservas').scrollIntoView({behavior:'smooth'})">Reservar</button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-img grad-3"><div class="grad-label">Hacienda</div></div>
+        <div class="card-body">
+          <span class="card-tag tag-hotel">Hotel</span>
+          <h4>Hotel Hacienda</h4>
+          <p>Hospédate en la hacienda restaurada. Habitaciones coloniales con vista a la selva, piscina y acceso exclusivo al cenote antes de la apertura pública.</p>
+          <div class="card-price">
+            <div><div class="price">$2,800</div><div class="per">por noche MXN</div></div>
+            <button class="btn-card" onclick="document.querySelector('#reservas').scrollIntoView({behavior:'smooth'})">Reservar</button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-img grad-5"><div class="grad-label">Restaurante</div></div>
+        <div class="card-body">
+          <span class="card-tag tag-gastronomia">Gastronomía</span>
+          <h4>Restaurante</h4>
+          <p>Cocina yucateca de autor con ingredientes locales. Menú degustación disponible para huéspedes del hotel con maridaje de mezcal artesanal.</p>
+          <div class="card-price">
+            <div><div class="price">$250–600</div><div class="per">por persona MXN</div></div>
+            <button class="btn-card" onclick="document.querySelector('#reservas').scrollIntoView({behavior:'smooth'})">Reservar</button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-img grad-6"><div class="grad-label">Romance</div></div>
+        <div class="card-body">
+          <span class="card-tag tag-romantico">Romántico</span>
+          <h4>Experiencia Romántica</h4>
+          <p>Cena flotante en el cenote, arreglo floral y botella de vino espumoso. Perfecta para propuestas, aniversarios o simplemente celebrar el amor.</p>
+          <div class="card-price">
+            <div><div class="price">$3,200</div><div class="per">por pareja MXN</div></div>
+            <button class="btn-card" onclick="document.querySelector('#reservas').scrollIntoView({behavior:'smooth'})">Reservar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARATIVA -->
+<section class="comparativa section" id="comparativa">
+  <div class="container">
+    <div class="fade-up">
+      <span class="section-eyebrow">¿Cuál es para ti?</span>
+      <h2 class="section-title">Comparativa<br><em>entre cenotes</em></h2>
+      <p class="section-sub">Encuentra cuál se adapta mejor a lo que buscas en tu experiencia.</p>
+    </div>
+    <div class="fade-up" style="overflow-x:auto;">
+      <table class="comp-table">
+        <thead>
+          <tr>
+            <th>Criterio</th>
+            <th>Cenotes Santa Bárbara</th>
+            <th>Cenote San Ignacio</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>👨‍👩‍👧‍👦 Mejor para familias</td><td class="win">⭐⭐⭐</td><td class="partial">⭐⭐</td></tr>
+          <tr><td>🧗 Mejor para aventura</td><td class="partial">⭐⭐</td><td class="win">⭐⭐⭐</td></tr>
+          <tr><td>💑 Experiencia romántica</td><td class="neutral">⭐</td><td class="win">⭐⭐⭐</td></tr>
+          <tr><td>🗺️ Ruta desde Mérida</td><td class="partial">45 min</td><td class="win">35 min</td></tr>
+          <tr><td>🌟 Experiencia completa</td><td class="win">4 cenotes</td><td class="partial">1 cenote + hotel</td></tr>
+          <tr><td>🌅 Día completo</td><td class="win">Circuito</td><td class="win">Múltiples pases</td></tr>
+          <tr><td>💰 Opción económica</td><td class="win">✔ Circuito básico</td><td class="partial">Pase General</td></tr>
+          <tr><td>💎 Opción premium</td><td class="neutral">Limitada</td><td class="win">Hotel + Romance</td></tr>
+          <tr><td>🍽️ Gastronomía</td><td class="win">Regional auténtica</td><td class="win">Cocina de autor</td></tr>
+          <tr><td>📸 Fotogénico</td><td class="win">4 perspectivas</td><td class="win">Corazón de Agua</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- MAPA / RUTA -->
+<section class="mapa-section" id="ruta">
+  <div class="container">
+    <div class="fade-up">
+      <span class="section-eyebrow">Planea tu camino</span>
+      <h2 class="section-title" style="color:white;">Ruta<br><em>optimizada</em></h2>
+      <p class="section-sub">Genera tu ruta personalizada directamente en Google Maps.</p>
+    </div>
+    <div class="mapa-controls fade-up">
+      <div class="mapa-grid">
+        <div class="mapa-field">
+          <label for="map-origen">Tu ciudad de origen</label>
+          <select id="map-origen">
+            <option value="Mérida, Yucatán, México">Mérida</option>
+            <option value="Valladolid, Yucatán, México">Valladolid</option>
+            <option value="Progreso, Yucatán, México">Progreso</option>
+            <option value="Cancún, Quintana Roo, México">Cancún</option>
+          </select>
+        </div>
+        <div class="mapa-field">
+          <label for="map-destino">Destino</label>
+          <select id="map-destino">
+            <option value="Cenotes Santa Bárbara Homún Yucatán">Cenotes Santa Bárbara (Homún)</option>
+            <option value="Cenote San Ignacio Chocholá Yucatán">Cenote San Ignacio (Chocholá)</option>
+          </select>
+        </div>
+        <div class="mapa-field" style="display:flex;align-items:flex-end;">
+          <button class="btn-mapa" onclick="abrirRuta()" style="width:100%;">🗺️ Abrir en Google Maps</button>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <button class="btn-mapa" onclick="abrirRutaDoble()" style="background:var(--verde-light);flex:1;min-width:200px;">🔄 Ruta combinada (ambos cenotes)</button>
+      </div>
+    </div>
+    <div class="mapa-iframe-wrap fade-up" id="mapaWrap" onclick="abrirRuta()">
+      <div class="mapa-placeholder">
+        <div class="icon">🗺️</div>
+        <h3 style="color:white;margin-bottom:12px;font-size:1.4rem;">Ver ubicaciones en mapa</h3>
+        <p>Selecciona tu origen y destino, luego haz clic en "Abrir en Google Maps"<br>para ver la ruta completa con indicaciones de manejo.</p>
+        <br>
+        <p style="opacity:0.5;font-size:0.8rem;">Cenotes Santa Bárbara — Homún, Yucatán<br>Cenote San Ignacio — Chocholá, Yucatán</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESERVAS -->
+<section class="reservas section" id="reservas">
+  <div class="container">
+    <div class="fade-up" style="margin-bottom:48px;">
+      <span class="section-eyebrow">Agenda tu visita</span>
+      <h2 class="section-title">Simula tu<br><em>reserva</em></h2>
+    </div>
+    <div class="reservas-grid">
+      <div class="reservas-info fade-up">
+        <h3>Tu aventura<br>comienza aquí</h3>
+        <p>Llena el formulario y simula tu reserva. Recibirás un folio de confirmación y podrás consultar tus reservas guardadas en cualquier momento.</p>
+        <ul class="reservas-bullets">
+          <li><span class="ic">✅</span><span>Folio de reserva único generado al instante</span></li>
+          <li><span class="ic">📱</span><span>Confirmación simulada por correo</span></li>
+          <li><span class="ic">💾</span><span>Reservas guardadas en tu dispositivo</span></li>
+          <li><span class="ic">🔒</span><span>Tus datos no se envían a ningún servidor</span></li>
+          <li><span class="ic">🌿</span><span>100% demo académica — consulta sitios oficiales para reservas reales</span></li>
+        </ul>
+      </div>
+      <div class="form-card fade-up">
+        <form id="reservaForm" onsubmit="enviarReserva(event)">
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="f-nombre">Nombre completo *</label>
+              <input type="text" id="f-nombre" placeholder="Ej. Ana García López">
+              <div class="err-msg" id="err-nombre">El nombre es obligatorio.</div>
+            </div>
+            <div class="form-field">
+              <label for="f-tel">Teléfono *</label>
+              <input type="tel" id="f-tel" placeholder="+52 999 123 4567">
+              <div class="err-msg" id="err-tel">El teléfono es obligatorio.</div>
+            </div>
+            <div class="form-field form-full">
+              <label for="f-email">Correo electrónico *</label>
+              <input type="email" id="f-email" placeholder="correo@ejemplo.com">
+              <div class="err-msg" id="err-email">Ingresa un correo válido.</div>
+            </div>
+            <div class="form-field">
+              <label for="f-cenote">Cenote de interés *</label>
+              <select id="f-cenote">
+                <option value="">Seleccionar...</option>
+                <option>Cenotes Santa Bárbara</option>
+                <option>Cenote San Ignacio — Pase General</option>
+                <option>Cenote San Ignacio — Pase Aventura</option>
+                <option>Cenote San Ignacio — Pase Nocturno</option>
+                <option>Cenote San Ignacio — Experiencia Romántica</option>
+                <option>Ambos (ruta combinada)</option>
+              </select>
+              <div class="err-msg" id="err-cenote">Selecciona un cenote.</div>
+            </div>
+            <div class="form-field">
+              <label for="f-exp">Tipo de experiencia</label>
+              <select id="f-exp">
+                <option value="">Seleccionar...</option>
+                <option>Familiar</option>
+                <option>Aventura</option>
+                <option>Romántica</option>
+                <option>Relajación</option>
+                <option>Gastronómica</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label for="f-fecha">Fecha *</label>
+              <input type="date" id="f-fecha">
+              <div class="err-msg" id="err-fecha">Selecciona una fecha.</div>
+            </div>
+            <div class="form-field">
+              <label for="f-hora">Hora de llegada</label>
+              <select id="f-hora">
+                <option>08:00 AM</option>
+                <option>09:00 AM</option>
+                <option>10:00 AM</option>
+                <option>11:00 AM</option>
+                <option>12:00 PM</option>
+                <option>01:00 PM</option>
+                <option>02:00 PM</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label for="f-personas">Número de personas *</label>
+              <input type="number" id="f-personas" placeholder="1" min="1" max="50">
+              <div class="err-msg" id="err-personas">Mínimo 1 persona.</div>
+            </div>
+            <div class="form-field form-full">
+              <label for="f-comentarios">Comentarios adicionales</label>
+              <textarea id="f-comentarios" placeholder="Necesidades especiales, preguntas, requerimientos..."></textarea>
+            </div>
+          </div>
+          <button type="submit" class="btn-submit">🎫 Confirmar reserva simulada</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Mis reservas -->
+    <div class="mis-reservas fade-up" id="misReservas">
+      <h3>Mis reservas simuladas</h3>
+      <p class="sub">Reservas guardadas en este dispositivo (localStorage)</p>
+      <div class="reservas-list" id="reservasList"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">Cenotes <span>Yucatán</span></div>
+        <p class="footer-tagline">Tu guía para descubrir los tesoros acuáticos más mágicos de la Península de Yucatán.</p>
+        <div class="footer-social">
+          <button class="social-btn" aria-label="Instagram" onclick="alert('Instagram simulado')">📷</button>
+          <button class="social-btn" aria-label="Facebook" onclick="alert('Facebook simulado')">📘</button>
+          <button class="social-btn" aria-label="TikTok" onclick="alert('TikTok simulado')">🎵</button>
+          <button class="social-btn" aria-label="YouTube" onclick="alert('YouTube simulado')">▶️</button>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Destinos</h5>
+        <ul>
+          <li><a href="https://cenotessantabarbara.com/" target="_blank" rel="noopener">Cenotes Santa Bárbara</a></li>
+          <li><a href="https://cenotesanignacio.com/" target="_blank" rel="noopener">Cenote San Ignacio</a></li>
+          <li><a href="#ruta">Ruta combinada</a></li>
+          <li><a href="#comparativa">Comparativa</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Herramientas</h5>
+        <ul>
+          <li><a href="#recomendador">Recomendador</a></li>
+          <li><a href="#reservas">Simular reserva</a></li>
+          <li><a href="#ruta">Planear ruta</a></li>
+          <li><a href="#misReservas">Mis reservas</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Legal</h5>
+        <ul>
+          <li><a href="#" onclick="return false">Aviso de privacidad</a></li>
+          <li><a href="#" onclick="return false">Términos de uso</a></li>
+          <li><a href="https://cenotessantabarbara.com/" target="_blank" rel="noopener">Sitio oficial SB</a></li>
+          <li><a href="https://cenotesanignacio.com/" target="_blank" rel="noopener">Sitio oficial SI</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>
+        <p class="footer-disclaimer">⚠️ Esta página es una simulación académica/demostrativa desarrollada por Sacbé Systems. Los precios, disponibilidad y servicios mostrados son referencias aproximadas. Para reservas oficiales y precios actualizados, consulta los sitios oficiales: cenotessantabarbara.com y cenotesanignacio.com</p>
+      </div>
+      <div class="sacbe-badge">🌿 Desarrollado por Sacbé Systems</div>
+    </div>
+  </div>
+</footer>
+
+<!-- WhatsApp Float -->
+<button class="wa-float" onclick="alert('WhatsApp simulado — Sacbé Systems\nEn producción conectaría con el número del negocio.')" aria-label="WhatsApp">💬</button>
+
+<!-- MODAL CONFIRMACIÓN -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-icon">🎉</div>
+    <h3>¡Reserva confirmada!</h3>
+    <p style="color:var(--gris);font-size:0.9rem;margin-bottom:8px;">Tu reserva ha sido registrada exitosamente.</p>
+    <div class="folio" id="modalFolio">YUC-000000</div>
+    <div class="modal-summary" id="modalSummary"></div>
+    <p class="modal-note">📧 Hemos enviado una confirmación simulada a tu correo. Consulta "Mis reservas" para ver el historial.</p>
+    <button class="btn-modal-close" onclick="cerrarModal()">Entendido ✓</button>
+  </div>
+</div>
+
+<script>
+// ===== NAV SCROLL =====
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// ===== MOBILE MENU =====
+function toggleMenu() {
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+
+// ===== INTERSECTION OBSERVER =====
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+// ===== RECOMENDADOR =====
+const recData = {
+  familiar: {
+    primer: 'santa-barbara', motivo: 'Múltiples cenotes en un solo circuito con seguridad, transporte interno y gastronomía regional hacen de Santa Bárbara el destino ideal para familias.',
+    sbActividades: ['Circuito de 4 cenotes en bicicleta o combi', 'Chaleco salvavidas incluido para niños', 'Restaurante con comida regional yucateca', 'Senderos naturales y fotografía'],
+    siActividades: ['Pase General para explorar el cenote', 'Área de descanso amplia', 'Restaurante con opciones para niños'],
+    sbNivel: '🌿 Familiar tranquila', siNivel: '💦 Familiar media', sbDur: '4–6 horas', siDur: '3–4 horas',
+  },
+  aventura: {
+    primer: 'san-ignacio', motivo: 'El Pase Aventura de San Ignacio ofrece rappel, tirolesa y kayak subterráneo en el Río Esmeralda — experiencias únicas que Santa Bárbara no tiene.',
+    siActividades: ['Rappel y tirolesa al cenote', 'Kayak en el Río Esmeralda', 'Snorkel en aguas subterráneas', 'Pase Nocturno opcional'],
+    sbActividades: ['Clavados en Cenote Xooch', 'Recorrido en bicicleta por el circuito', 'Snorkel en Cascabel'],
+    sbNivel: '🚴 Aventura moderada', siNivel: '🧗 Aventura extrema', sbDur: '5–7 horas', siDur: '4–6 horas',
+  },
+  romantica: {
+    primer: 'san-ignacio', motivo: 'La Experiencia Romántica de San Ignacio — cena flotante, arreglo floral y acceso al Corazón de Agua — es sin rival para parejas.',
+    siActividades: ['Cena flotante en el cenote', 'Acceso exclusivo al Corazón de Agua', 'Pase Nocturno para dos', 'Hotel Hacienda con vista a la selva'],
+    sbActividades: ['Visita íntima al Pool Cocom al amanecer', 'Fotografía artística entre los cuatro cenotes', 'Cena regional en el restaurante'],
+    sbNivel: '💑 Romántica tranquila', siNivel: '💎 Romántica premium', sbDur: '3–4 horas', siDur: '6–8 horas o 1 noche',
+  },
+  relajacion: {
+    primer: 'santa-barbara', motivo: 'El ritmo pausado del circuito de Santa Bárbara, con sus aguas tranquilas y entorno natural, invita a la desconexión total.',
+    sbActividades: ['Flotación libre en Pool Cocom', 'Meditación junto a Chaksikín', 'Almuerzo sin prisa en el restaurante', 'Paseo en bicicleta por la selva'],
+    siActividades: ['Flotación en el cenote principal', 'Descanso en zona hammock', 'Menú degustación en el restaurante'],
+    sbNivel: '🧘 Relajación total', siNivel: '🌊 Relajación con lujo', sbDur: '5–7 horas', siDur: '4–5 horas',
+  },
+  gastronomica: {
+    primer: 'santa-barbara', motivo: 'El restaurante de Santa Bárbara sirve cocina yucateca auténtica — cochinita pibil, sopa de lima, poc chuc — en el corazón de la selva, difícil de superar.',
+    sbActividades: ['Desayuno yucateco al llegar', 'Circuito de cenotes antes de comer', 'Comida regional completa en el restaurante', 'Tortillas hechas a mano'],
+    siActividades: ['Menú degustación de cocina de autor', 'Maridaje con mezcal artesanal', 'Cena en el hotel hacienda'],
+    sbNivel: '🍽️ Gastro-naturaleza', siNivel: '👨‍🍳 Gastronómica premium', sbDur: '5–6 horas', siDur: '5–7 horas',
+  },
+  'primer-viaje': {
+    primer: 'santa-barbara', motivo: 'Para tu primer contacto con los cenotes, Santa Bárbara ofrece la experiencia más completa y accesible: cuatro cenotes, guía incluido y precio moderado.',
+    sbActividades: ['Tour guiado por los 4 cenotes', 'Fotos en cada cenote del circuito', 'Almuerzo regional completo', 'Recuerdos artesanales en la entrada'],
+    siActividades: ['Visita al cenote principal con guía', 'Historia de la hacienda colonial', 'Acceso al Corazón de Agua'],
+    sbNivel: '🌟 Inicio perfecto', siNivel: '💧 Alternativa válida', sbDur: '5–7 horas', siDur: '3–5 horas',
+  },
+};
+
+function recomendar() {
+  const exp = document.getElementById('rec-exp').value;
+  const origen = document.getElementById('rec-origen').value;
+  const tiempo = document.getElementById('rec-tiempo').value;
+  const presupuesto = document.getElementById('rec-presupuesto').value;
+
+  if (!exp || !origen || !tiempo || !presupuesto) {
+    alert('Por favor completa todos los campos para obtener tu recomendación.');
+    return;
+  }
+
+  const data = recData[exp] || recData['primer-viaje'];
+  const isPremium = presupuesto === 'premium';
+  const isEconomico = presupuesto === 'economico';
+
+  // Override for premium → San Ignacio
+  let recPrimero = data.primer;
+  if (isPremium && exp !== 'familiar') recPrimero = 'san-ignacio';
+  if (isEconomico) recPrimero = 'santa-barbara';
+
+  const sbFirst = recPrimero === 'santa-barbara';
+  const sbMapQ = 'Cenotes Santa Bárbara Homún Yucatán';
+  const siMapQ = 'Cenote San Ignacio Chocholá Yucatán';
+  const origenVal = {
+    merida: 'Mérida, Yucatán, México', valladolid: 'Valladolid, Yucatán, México',
+    progreso: 'Progreso, Yucatán, México', cancun: 'Cancún, QR, México', otro: 'Mérida, Yucatán, México'
+  }[origen] || 'Mérida, Yucatán, México';
+
+  const sbRuta = `https://www.google.com/maps/dir/${encodeURIComponent(origenVal)}/${encodeURIComponent(sbMapQ)}`;
+  const siRuta = `https://www.google.com/maps/dir/${encodeURIComponent(origenVal)}/${encodeURIComponent(siMapQ)}`;
+
+  document.getElementById('rec-titulo').textContent = sbFirst ? '🌿 Te recomendamos Cenotes Santa Bárbara' : '💎 Te recomendamos Cenote San Ignacio';
+  document.getElementById('rec-motivo').textContent = data.motivo;
+
+  const sbCard = `
+    <div class="rec-res-cenote ${sbFirst ? 'winner' : ''}">
+      <span class="rec-badge ${sbFirst ? 'recomendado' : 'alternativo'}">${sbFirst ? '⭐ Recomendado' : 'Alternativa'}</span>
+      <h4>Cenotes Santa Bárbara</h4>
+      <p style="font-size:0.85rem;color:var(--gris);margin-bottom:4px;">📍 Homún, Yucatán · ${data.sbDur}</p>
+      <p style="font-size:0.8rem;color:var(--turquesa);font-weight:600;margin-bottom:8px;">${data.sbNivel}</p>
+      <ul class="rec-actividades">${(data.sbActividades || []).map(a => `<li>${a}</li>`).join('')}</ul>
+      <a href="${sbRuta}" target="_blank" rel="noopener" class="btn-ruta">🗺️ Ver ruta desde ${origen.charAt(0).toUpperCase()+origen.slice(1)}</a>
+    </div>`;
+  const siCard = `
+    <div class="rec-res-cenote ${!sbFirst ? 'winner' : ''}">
+      <span class="rec-badge ${!sbFirst ? 'recomendado' : 'alternativo'}">${!sbFirst ? '⭐ Recomendado' : 'Alternativa'}</span>
+      <h4>Cenote San Ignacio</h4>
+      <p style="font-size:0.85rem;color:var(--gris);margin-bottom:4px;">📍 Chocholá, Yucatán · ${data.siDur}</p>
+      <p style="font-size:0.8rem;color:var(--turquesa);font-weight:600;margin-bottom:8px;">${data.siNivel}</p>
+      <ul class="rec-actividades">${(data.siActividades || []).map(a => `<li>${a}</li>`).join('')}</ul>
+      <a href="${siRuta}" target="_blank" rel="noopener" class="btn-ruta">🗺️ Ver ruta desde ${origen.charAt(0).toUpperCase()+origen.slice(1)}</a>
+    </div>`;
+
+  document.getElementById('rec-res-grid').innerHTML = sbFirst ? sbCard + siCard : siCard + sbCard;
+  const res = document.getElementById('rec-resultado');
+  res.classList.add('visible');
+  setTimeout(() => res.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+}
+
+// ===== MAPA =====
+function abrirRuta() {
+  const origen = document.getElementById('map-origen').value;
+  const destino = document.getElementById('map-destino').value;
+  const url = `https://www.google.com/maps/dir/${encodeURIComponent(origen)}/${encodeURIComponent(destino)}`;
+  window.open(url, '_blank');
+}
+
+function abrirRutaDoble() {
+  const origen = document.getElementById('map-origen').value;
+  const url = `https://www.google.com/maps/dir/${encodeURIComponent(origen)}/Cenotes+Santa+B%C3%A1rbara+Hom%C3%BAn+Yucat%C3%A1n/Cenote+San+Ignacio+Chochol%C3%A1+Yucat%C3%A1n`;
+  window.open(url, '_blank');
+}
+
+// ===== RESERVAS =====
+function validar() {
+  let ok = true;
+  const campos = [
+    { id: 'f-nombre', err: 'err-nombre', check: v => v.trim().length > 1 },
+    { id: 'f-tel', err: 'err-tel', check: v => v.trim().length > 6 },
+    { id: 'f-email', err: 'err-email', check: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) },
+    { id: 'f-cenote', err: 'err-cenote', check: v => v !== '' },
+    { id: 'f-fecha', err: 'err-fecha', check: v => v !== '' },
+    { id: 'f-personas', err: 'err-personas', check: v => parseInt(v) >= 1 },
+  ];
+  campos.forEach(c => {
+    const el = document.getElementById(c.id);
+    const errEl = document.getElementById(c.err);
+    if (!c.check(el.value)) {
+      el.classList.add('error'); errEl.classList.add('show'); ok = false;
+    } else {
+      el.classList.remove('error'); errEl.classList.remove('show');
+    }
+  });
+  return ok;
+}
+
+function generarFolio() {
+  const letras = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+  const nums = Math.floor(Math.random() * 90000 + 10000);
+  const pre = letras[Math.floor(Math.random()*letras.length)] + letras[Math.floor(Math.random()*letras.length)];
+  return `YUC-${pre}${nums}`;
+}
+
+function enviarReserva(e) {
+  e.preventDefault();
+  if (!validar()) return;
+
+  const folio = generarFolio();
+  const reserva = {
+    folio,
+    nombre: document.getElementById('f-nombre').value,
+    email: document.getElementById('f-email').value,
+    tel: document.getElementById('f-tel').value,
+    cenote: document.getElementById('f-cenote').value,
+    exp: document.getElementById('f-exp').value || 'No especificada',
+    fecha: document.getElementById('f-fecha').value,
+    hora: document.getElementById('f-hora').value,
+    personas: document.getElementById('f-personas').value,
+    comentarios: document.getElementById('f-comentarios').value,
+    creado: new Date().toLocaleDateString('es-MX'),
+  };
+
+  // Guardar en localStorage
+  const reservas = JSON.parse(localStorage.getItem('sacbe_reservas') || '[]');
+  reservas.unshift(reserva);
+  localStorage.setItem('sacbe_reservas', JSON.stringify(reservas));
+
+  // Mostrar modal
+  document.getElementById('modalFolio').textContent = folio;
+  document.getElementById('modalSummary').innerHTML = `
+    <div><span>Nombre</span><span>${reserva.nombre}</span></div>
+    <div><span>Cenote</span><span>${reserva.cenote}</span></div>
+    <div><span>Fecha</span><span>${reserva.fecha}</span></div>
+    <div><span>Hora</span><span>${reserva.hora}</span></div>
+    <div><span>Personas</span><span>${reserva.personas}</span></div>
+    <div><span>Correo</span><span>${reserva.email}</span></div>
+  `;
+  document.getElementById('modalOverlay').classList.add('open');
+  document.getElementById('reservaForm').reset();
+  renderReservas();
+}
+
+function cerrarModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+}
+
+document.getElementById('modalOverlay').addEventListener('click', function(e) {
+  if (e.target === this) cerrarModal();
+});
+
+function renderReservas() {
+  const reservas = JSON.parse(localStorage.getItem('sacbe_reservas') || '[]');
+  const lista = document.getElementById('reservasList');
+  if (reservas.length === 0) {
+    lista.innerHTML = '<p class="reservas-empty">Aún no tienes reservas simuladas. ¡Completa el formulario para crear una!</p>';
+    return;
+  }
+  lista.innerHTML = reservas.map(r => `
+    <div class="reserva-item">
+      <div class="reserva-folio">Folio: ${r.folio}</div>
+      <h4>${r.cenote}</h4>
+      <div class="reserva-details">
+        👤 ${r.nombre}<br>
+        📅 ${r.fecha} · ${r.hora}<br>
+        👥 ${r.personas} persona(s)<br>
+        🎯 ${r.exp}<br>
+        📧 ${r.email}
+      </div>
+      <button class="btn-del-reserva" onclick="borrarReserva('${r.folio}')">🗑️ Eliminar</button>
+    </div>
+  `).join('');
+}
+
+function borrarReserva(folio) {
+  if (!confirm(`¿Eliminar la reserva ${folio}?`)) return;
+  const reservas = JSON.parse(localStorage.getItem('sacbe_reservas') || '[]').filter(r => r.folio !== folio);
+  localStorage.setItem('sacbe_reservas', JSON.stringify(reservas));
+  renderReservas();
+}
+
+// Fecha mínima = hoy
+document.getElementById('f-fecha').min = new Date().toISOString().split('T')[0];
+
+// Init
+renderReservas();
+</script>
+</body>
+</html>
